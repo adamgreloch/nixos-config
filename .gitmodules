@@ -1,0 +1,3 @@
+[submodule "nixpkgs/programs/vim"]
+	path = nixpkgs/programs/vim
+	url = git@github.com:adamgreloch/vim
