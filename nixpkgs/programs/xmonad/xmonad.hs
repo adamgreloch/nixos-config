@@ -1,4 +1,4 @@
-{-# LANGUAGE RecordWildCards #-}
+{-# LANGUAGE RecordWildCards, DeriveDataTypeable, TypeSynonymInstances, MultiParamTypeClasses #-}
 
 {-
  - TODO:
@@ -22,7 +22,8 @@ import XMonad.Layout.NoBorders
 import XMonad.Layout.Gaps
 import XMonad.Layout.Spacing
 
-import XMonad.Layout.ToggleLayouts
+import XMonad.Layout.MultiToggle as MT
+import XMonad.Layout.MultiToggle.Instances
 import XMonad.Layout.ThreeColumns
 import XMonad.Layout.Magnifier
 import XMonad.Layout.Renamed
@@ -114,20 +115,40 @@ myXmobarPP = def
     red      = xmobarColor "#dc322f" ""
     lowWhite = xmobarColor "#586e75" ""
 
-myLayout = toggleLayouts myFull (myTiled ||| myMirror ||| threeCol ||| zen)
-  where
-    myFull   = renamed [Replace "F"] $ noBorders Full
-    myTiled  = renamed [Replace "T"] $ addGaps $ addSpacing $ tiled
-    myMirror = renamed [Replace "MT"] $ addGaps $ addSpacing $ Mirror $ tiled
-    zen      = renamed [Replace "Z"] $ addBGaps $ Full
-    threeCol = renamed [Replace "TC"] $ addGaps $ addSpacing $ magnifiercz' 1.5 $ ThreeColMid nmaster delta ratio
-    tiled    = Tall nmaster delta ratio
-    nmaster  = 1      -- Default number of windows in the master pane
-    ratio    = 1/2    -- Default proportion of screen occupied by master pane
-    delta    = 3/100  -- Percent of screen to increment by when resizing panes
-    addGaps              = gaps [(U, gap),(D, gap),(L, gap),(R, gap)]
-    addBGaps             = gaps [(U, bGap),(D, bGap),(L, vbGap),(R, vbGap)]
-    addSpacing           = spacing gap
+-- My layouts
+-- Disclaimer: this is a little messy. Did this on a whim without much time to
+-- fully understand transformers.
+-- Need to read
+-- https://hackage.haskell.org/package/xmonad-contrib-0.8/docs/XMonad-Layout-MultiToggle.html
+-- as well as
+-- https://github.com/altercation/dotfiles-tilingwm/blob/master/.xmonad/xmonad.hs
+
+addGaps              = gaps [(U, gap),(D, gap),(L, gap),(R, gap)]
+addBGaps             = gaps [(U, bGap),(D, bGap),(L, vbGap),(R, vbGap)]
+addSpacing           = spacing gap
+
+nmaster  = 1      -- Default number of windows in the master pane
+ratio    = 1/2    -- Default proportion of screen occupied by master pane
+delta    = 3/100  -- Percent of screen to increment by when resizing panes
+
+tiled    = Tall nmaster delta ratio
+myFull   = renamed [Replace "F"] $ noBorders Full
+myTiled  = renamed [Replace "T"] $ addGaps $ addSpacing $ tiled
+myMirror = renamed [Replace "MT"] $ addGaps $ addSpacing $ Mirror $ tiled
+zen      = renamed [Replace "Z"] $ addBGaps $ Full
+threeCol = renamed [Replace "TC"] $ addGaps $ addSpacing $ magnifiercz' 1.5 $ ThreeColMid nmaster delta ratio
+
+data ZEN = ZEN deriving (Read, Show, Eq, Typeable)
+instance Transformer ZEN Window where
+ transform ZEN x k = k zen (\_ -> x)
+
+data MYFULL = MYFULL deriving (Read, Show, Eq, Typeable)
+instance Transformer MYFULL Window where
+ transform MYFULL x k = k myFull (\_ -> x)
+
+myLayout = mkToggle (single ZEN)
+    . mkToggle (single MYFULL)
+    $ myTiled ||| myMirror ||| threeCol
 
 -- | The xmonad key bindings. Add, modify or remove key bindings here.
 --
@@ -146,7 +167,8 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
     , ((modMask,               xK_n     ), refresh) -- %! Resize viewed windows to the correct size
 
-    , ((modMask,               xK_f ), sendMessage ToggleLayout) -- %! Rotate through the available layout algorithms
+    , ((modMask,               xK_f ), sendMessage $ MT.Toggle MYFULL)
+    , ((modMask,               xK_g ), sendMessage $ MT.Toggle ZEN)
 
     -- move focus up or down the window stack
     , ((modMask,               xK_Tab   ), windows W.focusDown) -- %! Move focus to the next window
