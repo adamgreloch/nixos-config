@@ -3,13 +3,19 @@
 {
   imports =
     [
-    ./hardware-configuration.nix
-    ./device.nix
-    ./wm/xmonad.nix
+      ./hardware-configuration.nix
+      ./wm/xmonad.nix
+      ./machine.nix # import machine-specific config
   ];
 
   # Bootloader.
-  boot.loader.systemd-boot.enable = true;
+  boot.loader.timeout = 0;
+
+  boot.loader.systemd-boot = {
+    enable = true;
+    editor = false; # set to true creates vulnerability
+  };
+
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
@@ -27,10 +33,6 @@
     '';
 
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Enable networking
   networking.networkmanager.enable = true;

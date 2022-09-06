@@ -19,7 +19,7 @@ bindkey '^o' cd_with_fzf
 
 function pdf_with_fzf {
     cd $HOME;
-    file="$(fd -e "pdf" | fzf)";
+    file="$(fd -I -e "pdf" | fzf)";
     zathura $file &>/dev/null &!;
     zle reset-prompt
 }

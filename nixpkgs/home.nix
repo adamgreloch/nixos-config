@@ -1,6 +1,11 @@
 { config, pkgs, ... }:
 
 {
+  imports = [
+    ./programs/xmonad/default.nix
+    ./machine.nix # import machine-specific config
+  ];
+
   home.username = "adam";
   home.homeDirectory = "/home/adam";
 
@@ -26,7 +31,6 @@
 
       # math-related
       texlive.combined.scheme-full
-      mathematica
 
       # for fzf and my zsh binds
       fd
@@ -43,13 +47,6 @@
           window.padding = {
             x = 5;
             y = 5;
-          };
-          font = {
-            normal = {
-              family = "Iosevka Extended";
-              style = "Regular";
-            };
-            size = 10;
           };
           colors = {
             primary = {
@@ -81,6 +78,7 @@
             editor = "vim";
             autocrlf = "input";
           };
+          commit.verbose = true;
           color = {
             ui = true;
           };
@@ -121,6 +119,10 @@
           mv = "mv -v";
           rm = "rm -I";
 
+          g = "git status";
+          ga = "git add";
+          gc = "git commit";
+
           v = "vim";
           vxm = "vim ~/.config/nixpkgs/programs/xmonad/xmonad.hs";
           vxmb = "vim ~/.config/xmobar/xmobarrc";
@@ -132,7 +134,7 @@
           sconf = "sudo nixos-rebuild switch";
           shome = "home-manager switch";
           vhome = "vim ~/.config/nixpkgs/home.nix";
-          vconf = "sudo vim /etc/nixos/configuration.nix";
+          vconf = "vim /etc/nixos/configuration.nix";
           cdpkg = "cd ~/.config/nixpkgs/";
 
           tl = "vim ~/Pudlo/thelist.md";
@@ -197,10 +199,6 @@
       defaultCursor = "left_ptr";
     };
   };
-
-  imports = [
-    ./programs/xmonad/default.nix
-  ];
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;

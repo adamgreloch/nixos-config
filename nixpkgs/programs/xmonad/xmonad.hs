@@ -34,6 +34,7 @@ import XMonad.Hooks.StatusBar
 import XMonad.Hooks.StatusBar.PP
 import XMonad.Util.Loggers
 
+import XMonad.Actions.WindowBringer
 
 -- WIP colors and some ideas from Ethan Schoonover
 -- https://github.com/altercation/dotfiles-tilingwm
@@ -212,8 +213,8 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     ++
     [ ((0,              xF86XK_MonBrightnessDown), spawn "xbacklight -dec 10"  )
     , ((0,              xF86XK_MonBrightnessUp  ), spawn "xbacklight -inc 10"  )
-    , ((shiftMask,      xF86XK_MonBrightnessDown), spawn "xbacklight -dec 20"  )
-    , ((shiftMask,      xF86XK_MonBrightnessUp  ), spawn "xbacklight -inc 20")
+    , ((shiftMask,      xF86XK_MonBrightnessDown), spawn "xbacklight -dec 5"  )
+    , ((shiftMask,      xF86XK_MonBrightnessUp  ), spawn "xbacklight -inc 5")
     ]
     ++
     [ ((0,              xF86XK_AudioPlay     ), spawn "playerctl play-pause"  )
@@ -228,6 +229,10 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     ]
     ++
     [ ((modMask .|. shiftMask,   xK_s), spawn "maim -s -u | xclip -selection clipboard -t image/png")
+    ]
+    ++
+    [ ((modMask .|. shiftMask,   xK_g), gotoMenu)
+    , ((modMask .|. shiftMask,   xK_b), bringMenu)
     ]
 
 myConfig = def
@@ -246,4 +251,5 @@ myConfig = def
     , ("M-C-m", spawn "thunderbird" )
     , ("M-C-s", spawn "spotify" )
     , ("S-M-C-l", spawn "xautolock -locknow && sleep 30 && xset dpms force off" )
+    , ("M-C-p", spawn "zathura $(fd -I -e \"pdf\" | dmenu -i -l 30)" )
     ]

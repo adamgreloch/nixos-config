@@ -1,15 +1,12 @@
 { config, lib, pkgs, ... }:
 
 {
+  networking.hostName = "nixos-t480";
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "usb_storage"
   "sd_mod" "thinkpad_acpi"];
   boot.initrd.kernelModules = [ "acpi_call" ];
   boot.extraModulePackages = with config.boot.kernelPackages; [acpi_call];
-
-  networking.hostName = "nixos-t480";
-
-  security.tpm2.enable = true;
 
   hardware.acpilight.enable = true;
 
@@ -44,5 +41,7 @@
     '';
   };
 
+  # Enable TPM 2.0
+  security.tpm2.enable = true;
 }
 			
