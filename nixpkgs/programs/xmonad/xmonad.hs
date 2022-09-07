@@ -251,5 +251,5 @@ myConfig = def
     , ("M-C-m", spawn "thunderbird" )
     , ("M-C-s", spawn "spotify" )
     , ("S-M-C-l", spawn "xautolock -locknow && sleep 30 && xset dpms force off" )
-    , ("M-C-p", spawn "zathura $(fd -I -e \"pdf\" | dmenu -i -l 30)" )
+    , ("M-C-p", spawn "zathura \"$(fd -I -e \"pdf\" | dmenu -i -l 30)\"" )
     ]
