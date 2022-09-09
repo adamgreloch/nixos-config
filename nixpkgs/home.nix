@@ -26,6 +26,8 @@
       maim
       xclip
 
+      android-studio
+      qemu_kvm
       jetbrains.idea-ultimate
       jdk11
 
@@ -201,6 +203,13 @@
     x11 = {
       enable = true;
       defaultCursor = "left_ptr";
+    };
+  };
+
+  home.file = {
+    ideavimrc = {
+      source = ./programs/ideavimrc/.ideavimrc;
+      target = ".ideavimrc";
     };
   };
 

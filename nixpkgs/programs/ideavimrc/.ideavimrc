@@ -1,0 +1,41 @@
+"" Source your .vimrc (?)
+"source ~/.vimrc
+
+"" -- Suggested options --
+" Show a few lines of context around the cursor. Note that this makes the
+" text scroll if you mouse-click near the start or end of the window.
+set scrolloff=10
+set number relativenumber
+
+" Do incremental searching.
+set incsearch
+set showmode
+
+" Don't use Ex mode, use Q for formatting.
+map Q gq
+
+set ignorecase
+set incsearch
+
+map <leader>d <Action>(Debug)
+map <leader>r <Action>(RenameElement)
+map <leader>R <Action>(Run)
+map <leader>Q <Action>(ReformatCode)
+map <leader>c <Action>(Stop)
+map <leader>g <Action>(ToggleDistractionFreeMode)
+map <leader>t <Action>(ToggleLineBreakpoint)
+map <leader>o <Action>(GotoClass)
+map <S-Space> <Action>(GotoNextError)
+
+nmap gs <Action>(HighlightUsagesInFile)
+nmap ]q <Action>(GotoNextElementUnderCaretUsage)
+nmap [q <Action>(GotoPrevElementUnderCaretUsage)
+
+" Highlight the element under the caret, and use CMD+G/Shift+CMD+G to iterate over
+nmap gD <Action>(GotoTypeDeclaration)
+
+nmap gl <Action>(QuickJavaDoc)
+nmap gL <Action>(QuickImplementations)
+nmap gy <Action>(ShowErrorDescription)ion>(GotoNextError)
+
+" Find more examples here: https://jb.gg/share-ideavimrc
