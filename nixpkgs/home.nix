@@ -32,6 +32,9 @@
       # math-related
       texlive.combined.scheme-full
 
+      # c/cpp
+      gcc
+
       # for fzf and my zsh binds
       fd
       tree
@@ -114,6 +117,7 @@
 
       zsh = {
         enable = true;
+        defaultKeymap = "viins";
         shellAliases = {
           ls = "ls -a --color=auto";
           mv = "mv -v";

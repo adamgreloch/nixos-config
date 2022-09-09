@@ -211,10 +211,10 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
         | (key, sc) <- zip [xK_w, xK_e, xK_r] [0..]
         , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
     ++
-    [ ((0,              xF86XK_MonBrightnessDown), spawn "xbacklight -dec 10"  )
-    , ((0,              xF86XK_MonBrightnessUp  ), spawn "xbacklight -inc 10"  )
-    , ((shiftMask,      xF86XK_MonBrightnessDown), spawn "xbacklight -dec 5"  )
-    , ((shiftMask,      xF86XK_MonBrightnessUp  ), spawn "xbacklight -inc 5")
+    [ ((0,              xF86XK_MonBrightnessDown), spawn "xbacklight -2"  )
+    , ((0,              xF86XK_MonBrightnessUp  ), spawn "xbacklight +2"  )
+    , ((shiftMask,      xF86XK_MonBrightnessDown), spawn "xbacklight -10"  )
+    , ((shiftMask,      xF86XK_MonBrightnessUp  ), spawn "xbacklight +10")
     ]
     ++
     [ ((0,              xF86XK_AudioPlay     ), spawn "playerctl play-pause"  )
