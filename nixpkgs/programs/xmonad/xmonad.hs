@@ -34,10 +34,16 @@ import XMonad.Hooks.StatusBar
 import XMonad.Hooks.StatusBar.PP
 import XMonad.Util.Loggers
 
+import XMonad.ManageHook
+import XMonad.Util.NamedScratchpad
+import XMonad.Util.WorkspaceCompare
+
 import XMonad.Actions.WindowBringer
 
 -- WIP colors and some ideas from Ethan Schoonover
 -- https://github.com/altercation/dotfiles-tilingwm
+--
+-- Actually now the colors might differ from solarized. Need to check
 
 base03  = "#002b36"
 base02  = "#073642"
@@ -62,30 +68,15 @@ inactive    = base02
 focusColor  = blue
 unfocusColor = base02
 
-main :: IO ()
-main = xmonad
-     . ewmhFullscreen
-     . ewmh
-     . withEasySB (statusBarProp "xmobar ~/.config/xmobar/xmobarrc" (pure myXmobarPP)) defToggleStrutsKey
-     $ myConfig
-
-topbar      = 5
 border      = 3
 gap         = 6
 bGap        = 90        -- bigGap, mainly for zen layout
 vbGap       = 240       -- vertical bigGap, mainly for zen layout
 
-topBarTheme = def
-    { inactiveBorderColor   = base03
-    , inactiveColor         = base03
-    , inactiveTextColor     = base03
-    , activeBorderColor     = active
-    , activeColor           = active
-    , activeTextColor       = active
-    , urgentBorderColor     = red
-    , urgentTextColor       = yellow
-    , decoHeight            = topbar
-    }
+scratchpads = [
+    NS "todoist" "firefox --class \"todoist\" -new-instance -P \"todoist\" https://todoist.com" (className =? "todoist")
+        (customFloating $ W.RationalRect (1/32) (1/16) (14/32) (14/16))
+        ]
 
 myXmobarPP :: PP
 myXmobarPP = def
@@ -98,6 +89,7 @@ myXmobarPP = def
     , ppOrder           = \[ws, l, _, wins] -> [ws, l, wins]
     , ppLayout          = blue . wrap "" ""
     , ppExtras          = [logTitles formatFocused formatUnfocused]
+    , ppSort = fmap (filterOutWs [scratchpadWorkspaceTag].) (ppSort def)
     }
   where
     formatFocused   = wrap (white    "[") (white    "]") . yellow   . ppWindow
@@ -117,7 +109,7 @@ myXmobarPP = def
     lowWhite = xmobarColor "#586e75" ""
 
 -- My layouts
--- Disclaimer: this is a little messy. Did this on a whim without much time to
+-- Disclaimer: this is a mess. Did this on a whim without much time to
 -- fully understand transformers.
 -- Need to read
 -- https://hackage.haskell.org/package/xmonad-contrib-0.8/docs/XMonad-Layout-MultiToggle.html
@@ -221,9 +213,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     , ((0,              xF86XK_AudioPause    ), spawn "playerctl pause"  )
     , ((0,              xF86XK_AudioNext     ), spawn "playerctl next"  )
     , ((0,              xF86XK_AudioPrev     ), spawn "playerctl previous")
-    ]
-    ++
-    [ ((0,              xF86XK_AudioRaiseVolume), spawn "pactl set-sink-volume @DEFAULT_SINK@ +5%")
+    , ((0,              xF86XK_AudioRaiseVolume), spawn "pactl set-sink-volume @DEFAULT_SINK@ +5%")
     , ((0,              xF86XK_AudioLowerVolume), spawn "pactl set-sink-volume @DEFAULT_SINK@ -5%")
     , ((0,              xF86XK_AudioMute       ), spawn "pactl set-sink-mute @DEFAULT_SINK@ toggle")
     ]
@@ -240,6 +230,7 @@ myConfig = def
     , focusFollowsMouse = False
     , terminal       = "alacritty"
     , keys           = myKeys
+    , manageHook = namedScratchpadManageHook scratchpads
     , layoutHook     = myLayout
     , borderWidth    = border
     , normalBorderColor = "#020202"
@@ -247,9 +238,16 @@ myConfig = def
     }
     `additionalKeysP`
     [ ("M-C-f", spawn "firefox" )
-    , ("M-C-t", spawn "firefox todoist.com" )
+    , ("M-C-t", namedScratchpadAction scratchpads "todoist" )
     , ("M-C-m", spawn "thunderbird" )
     , ("M-C-s", spawn "spotify" )
-    , ("S-M-C-l", spawn "xautolock -locknow && sleep 30 && xset dpms force off" )
+    , ("S-M-C-l", spawn "xset s activate && sleep 30 && xset dpms force off" )
     , ("M-C-p", spawn "zathura \"$(fd -I -e \"pdf\" | dmenu -i -l 30)\"" )
     ]
+
+main :: IO ()
+main = xmonad
+     . ewmhFullscreen
+     . ewmh
+     . withEasySB (statusBarProp "xmobar ~/.config/xmobar/xmobarrc" (pure myXmobarPP)) defToggleStrutsKey
+     $ myConfig

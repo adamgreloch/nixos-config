@@ -1,5 +1,8 @@
 { config, pkgs, ... }:
 
+# TODO
+# * symlink xmobar config and make them machine-specific!
+
 {
   imports = [
     ./programs/xmonad/default.nix
