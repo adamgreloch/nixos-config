@@ -25,6 +25,7 @@ map <leader>c <Action>(Stop)
 map <leader>g <Action>(ToggleDistractionFreeMode)
 map <leader>t <Action>(ToggleLineBreakpoint)
 map <leader>o <Action>(GotoClass)
+map <leader>f <Action>(GotoFile)
 map <S-Space> <Action>(GotoNextError)
 
 nmap gs <Action>(HighlightUsagesInFile)

@@ -44,6 +44,11 @@
       fd
       tree
 
+      # microblog
+      jekyll
+      bundler
+      bundix
+
       s-tui
       stress
     ];

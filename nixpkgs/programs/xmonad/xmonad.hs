@@ -39,6 +39,7 @@ import XMonad.Util.NamedScratchpad
 import XMonad.Util.WorkspaceCompare
 
 import XMonad.Actions.WindowBringer
+import XMonad.Actions.FloatKeys
 
 -- WIP colors and some ideas from Ethan Schoonover
 -- https://github.com/altercation/dotfiles-tilingwm
@@ -73,9 +74,20 @@ gap         = 6
 bGap        = 90        -- bigGap, mainly for zen layout
 vbGap       = 240       -- vertical bigGap, mainly for zen layout
 
-scratchpads = [
-    NS "todoist" "firefox --class \"todoist\" -new-instance -P \"todoist\" https://todoist.com" (className =? "todoist")
-        (customFloating $ W.RationalRect (1/32) (1/16) (14/32) (14/16))
+todoistUrl = "https://todoist.com"
+calendarUrl = "https://calendar.google.com"
+plannersCommand = "firefox --class \"planners\" -new-instance -P \"planners\" "
+        ++ todoistUrl ++ " " ++ calendarUrl
+
+comfyFloating = customFloating $ W.RationalRect (8/32) (1/16) (16/32) (14/16)
+
+scratchpads =
+    [ NS "planners" plannersCommand (className =? "planners")
+        comfyFloating
+    , NS "spotify" "spotify" (className =? "Spotify")
+        comfyFloating
+    , NS "terminal" "alacritty --class scratchterm" (resource =? "scratchterm")
+        comfyFloating
         ]
 
 myXmobarPP :: PP
@@ -221,8 +233,14 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     [ ((modMask .|. shiftMask,   xK_s), spawn "maim -s -u | xclip -selection clipboard -t image/png")
     ]
     ++
-    [ ((modMask .|. shiftMask,   xK_g), gotoMenu)
-    , ((modMask .|. shiftMask,   xK_b), bringMenu)
+    [ ((modMask .|. shiftMask,   xK_g   ), gotoMenu)
+    , ((modMask .|. shiftMask,   xK_b   ), bringMenu)
+    ]
+    ++
+    [ ((modMask .|. shiftMask, xK_l     ), withFocused (keysResizeWindow (10, 0) (0, 0)))
+    , ((modMask .|. shiftMask, xK_h     ), withFocused (keysResizeWindow (-10, 0) (0, 0)))
+    , ((modMask .|. shiftMask, xK_k     ), withFocused (keysResizeWindow (0, 10) (0, 0)))
+    , ((modMask .|. shiftMask, xK_j     ), withFocused (keysResizeWindow (0, -10) (0, 0)))
     ]
 
 myConfig = def
@@ -238,9 +256,10 @@ myConfig = def
     }
     `additionalKeysP`
     [ ("M-C-f", spawn "firefox" )
-    , ("M-C-t", namedScratchpadAction scratchpads "todoist" )
+    , ("M-C-t", namedScratchpadAction scratchpads "planners" )
+    , ("M-C-s", namedScratchpadAction scratchpads "spotify" )
+    , ("M-C-x", namedScratchpadAction scratchpads "terminal" )
     , ("M-C-m", spawn "thunderbird" )
-    , ("M-C-s", spawn "spotify" )
     , ("S-M-C-l", spawn "xset s activate && sleep 30 && xset dpms force off" )
     , ("M-C-p", spawn "zathura \"$(fd -I -e \"pdf\" | dmenu -i -l 30)\"" )
     ]
