@@ -47,6 +47,8 @@
 
       s-tui
       stress
+
+      zoom-us
     ];
 
     programs = {
@@ -80,7 +82,7 @@
         };
         extraConfig = {
           user = {
-            user = "Adam Greloch";
+            name = "Adam Greloch";
             email = "zplhatesbananas@gmail.com";
           };
           core = {
@@ -132,6 +134,7 @@
           g = "git status";
           ga = "git add";
           gc = "git commit";
+          gl = "git lg";
 
           v = "vim";
           vxm = "vim ~/.config/nixpkgs/programs/xmonad/xmonad.hs";
@@ -190,6 +193,7 @@
       screen-locker = {
           enable = true;
           lockCmd = "${pkgs.xsecurelock}/bin/xsecurelock";
+          inactiveInterval = 15;
           xss-lock.extraOptions = [ "-l" 
           "-n ${pkgs.xsecurelock}/libexec/xsecurelock/dimmer" ];
         };
@@ -215,6 +219,10 @@
     ideavimrc = {
       source = ./programs/ideavimrc/.ideavimrc;
       target = ".ideavimrc";
+    };
+    xmobar = {
+      source = ./programs/xmobar;
+      target = ".config/xmobar";
     };
   };
 

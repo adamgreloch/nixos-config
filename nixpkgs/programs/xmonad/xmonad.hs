@@ -132,6 +132,7 @@ myXmobarPP = def
 
 addGaps              = gaps [(U, gap),(D, gap),(L, gap),(R, gap)]
 addBGaps             = gaps [(U, bGap),(D, bGap),(L, vbGap),(R, vbGap)]
+addHGaps             = gaps [(U, gap),(D, gap),(L, vbGap),(R, vbGap)]
 addSpacing           = spacing gap
 
 nmaster  = 1      -- Default number of windows in the master pane
@@ -142,7 +143,7 @@ tiled    = Tall nmaster delta ratio
 myFull   = renamed [Replace "F"] $ noBorders Full
 myTiled  = renamed [Replace "T"] $ addGaps $ addSpacing $ tiled
 myMirror = renamed [Replace "MT"] $ addGaps $ addSpacing $ Mirror $ tiled
-zen      = renamed [Replace "Z"] $ addBGaps $ Full
+zen      = renamed [Replace "Z"] $ addHGaps $ Full
 threeCol = renamed [Replace "TC"] $ addGaps $ addSpacing $ magnifiercz' 1.5 $ ThreeColMid nmaster delta ratio
 
 data ZEN = ZEN deriving (Read, Show, Eq, Typeable)
@@ -273,3 +274,4 @@ main = xmonad
      . ewmh
      . withEasySB (statusBarProp "xmobar ~/.config/xmobar/xmobarrc" (pure myXmobarPP)) defToggleStrutsKey
      $ myConfig
+
