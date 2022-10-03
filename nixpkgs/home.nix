@@ -17,6 +17,7 @@
   nixpkgs.config.allowUnfree = true;
 
   home.packages = with pkgs; [
+      atool
 
       calibre
       firefox
@@ -43,11 +44,6 @@
       # for fzf and my zsh binds
       fd
       tree
-
-      # microblog
-      jekyll
-      bundler
-      bundix
 
       s-tui
       stress
@@ -144,6 +140,7 @@
           x = "xdg-open";
           z = "zathura";
           zp = "z *.pdf";
+          plan = "feh -Z ~/Pudlo/studia/plan.gif";
 
           sconf = "sudo nixos-rebuild switch";
           shome = "home-manager switch";
@@ -187,7 +184,7 @@
 
       random-background = {
         enable = true;
-        imageDirectory = "%h/wallpapers";
+        imageDirectory = "%h/current";
       };
 
       screen-locker = {

@@ -88,6 +88,8 @@ scratchpads =
         comfyFloating
     , NS "terminal" "alacritty --class scratchterm" (resource =? "scratchterm")
         comfyFloating
+    , NS "mail" "thunderbird" (className =? "Thunderbird")
+        comfyFloating
         ]
 
 myXmobarPP :: PP
@@ -259,9 +261,10 @@ myConfig = def
     , ("M-C-t", namedScratchpadAction scratchpads "planners" )
     , ("M-C-s", namedScratchpadAction scratchpads "spotify" )
     , ("M-C-x", namedScratchpadAction scratchpads "terminal" )
-    , ("M-C-m", spawn "thunderbird" )
+    , ("M-C-m", namedScratchpadAction scratchpads "mail" )
     , ("S-M-C-l", spawn "xset s activate && sleep 30 && xset dpms force off" )
     , ("M-C-p", spawn "zathura \"$(fd -I -e \"pdf\" | dmenu -i -l 30)\"" )
+    , ("M-C-S-s", spawn "maim -s -u $HOME/Screenshots/$(date +%Y-%m-%d-%H-%M-%S).png")
     ]
 
 main :: IO ()
