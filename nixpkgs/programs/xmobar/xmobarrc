@@ -10,7 +10,7 @@ Config {
    -- layout
    , sepChar =  "%"   -- delineator between plugin names and straight text
    , alignSep = "}{"  -- separator between left-right alignment
-   , template = "%XMonadLog% }{ %battery% | %alsa:default:Master% | %cpu% | %coretemp% | %memory% | %wi% | %date%"
+   , template = "%XMonadLog% }{ %battery% | %alsa:default:Master% | %cpu% | %coretemp% | %memory% | %wlp3s0wi% | %date%"
 
    -- general behavior
    , lowerOnStart =     True    -- send to bottom of window stack on start
@@ -36,7 +36,7 @@ Config {
    --   see http://projects.haskell.org/xmobar/#system-monitor-plugins.
    , commands =
         -- network activity monitor (dynamic interface resolution)
-        [ Run Wireless ""    [ "--template" , "<ssid>: <quality>%"
+        [ Run Wireless "wlp3s0"  [ "--template" , "<ssid>: <quality>%"
                              , "--Low"      , "50"         -- units: %
                              , "--High"     , "80"         -- units: %
                              , "--low"      , "#dc322f"

@@ -3,7 +3,7 @@
 {
   networking.hostName = "nixos-t480";
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "usb_storage"
+  boot.initrd.availableKernelModules = [ "aesni_intel" "cryptd" "xhci_pci" "nvme" "usb_storage"
   "sd_mod" "thinkpad_acpi"];
   boot.initrd.kernelModules = [ "acpi_call" ];
   boot.extraModulePackages = with config.boot.kernelPackages; [acpi_call];
@@ -43,5 +43,11 @@
 
   # Enable TPM 2.0
   security.tpm2.enable = true;
+
+  boot.resumeDevice = "/dev/disk/by-uuid/a04b6bb1-8ef5-4571-852a-932d9ed524bb";
+
+  boot.kernelParams = [ "resume_offset=14196736" ];
+
+  swapDevices = [{device = "/var/swapfile"; size = 32768; }];
 }
 			

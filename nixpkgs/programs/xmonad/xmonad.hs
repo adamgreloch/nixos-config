@@ -88,7 +88,7 @@ scratchpads =
         comfyFloating
     , NS "terminal" "alacritty --class scratchterm" (resource =? "scratchterm")
         comfyFloating
-    , NS "mail" "thunderbird" (className =? "Thunderbird")
+    , NS "mail" "thunderbird" (className =? "thunderbird")
         comfyFloating
         ]
 

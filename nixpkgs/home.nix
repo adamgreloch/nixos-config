@@ -48,6 +48,14 @@
       s-tui
       stress
 
+      (let
+        customRC = ''${builtins.readFile (./programs/vim/vimrc)}'';
+        vim = config.programs.vim.packageConfigurable.customize {
+          name = "vim";
+          vimrcConfig = { inherit customRC; };
+        };
+      in vim)
+
       zoom-us
     ];
 
@@ -104,13 +112,8 @@
             short = true;
           };
           pull.rebase = true;
-          diff.tool = "vimdiff";
+          merge.tool = "vimdiff";
         };
-      };
-
-      vim = {
-        enable = true;
-        extraConfig = builtins.readFile (./programs/vim/vimrc);
       };
 
       fzf = {
@@ -194,8 +197,11 @@
           enable = true;
           lockCmd = "${pkgs.xsecurelock}/bin/xsecurelock";
           inactiveInterval = 15;
-          xss-lock.extraOptions = [ "-l" 
-          "-n ${pkgs.xsecurelock}/libexec/xsecurelock/dimmer" ];
+          xss-lock.extraOptions = [
+            "-l" 
+            "-n ${pkgs.xsecurelock}/libexec/xsecurelock/dimmer" 
+            #"--ignore-sleep"
+          ];
         };
 
       unclutter = {

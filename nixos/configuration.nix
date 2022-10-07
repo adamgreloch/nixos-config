@@ -32,8 +32,6 @@
       options hid_apple swap_fn_leftctrl=1
     '';
 
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-
   # Enable networking
   networking.networkmanager.enable = true;
 
@@ -100,6 +98,7 @@
 
   # List packages installed in system profile
   environment.systemPackages = with pkgs; [
+    vim
     networkmanagerapplet
     xsecurelock
   ];
@@ -136,5 +135,4 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "22.05";
-
 }
