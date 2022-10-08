@@ -27,12 +27,15 @@ import XMonad.Layout.MultiToggle.Instances
 import XMonad.Layout.ThreeColumns
 import XMonad.Layout.Magnifier
 import XMonad.Layout.Renamed
+import XMonad.Layout.Reflect (reflectHoriz)
 
 import Graphics.X11.ExtraTypes.XF86
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.StatusBar
 import XMonad.Hooks.StatusBar.PP
 import XMonad.Util.Loggers
+
+import XMonad.Hooks.InsertPosition
 
 import XMonad.ManageHook
 import XMonad.Util.NamedScratchpad
@@ -90,6 +93,8 @@ scratchpads =
         comfyFloating
     , NS "mail" "thunderbird" (className =? "thunderbird")
         comfyFloating
+    , NS "calc" "alacritty --class calc --command \"kalker\"" (resource =? "calc")
+        comfyFloating
         ]
 
 myXmobarPP :: PP
@@ -139,7 +144,7 @@ nmaster  = 1      -- Default number of windows in the master pane
 ratio    = 1/2    -- Default proportion of screen occupied by master pane
 delta    = 3/100  -- Percent of screen to increment by when resizing panes
 
-tiled    = Tall nmaster delta ratio
+tiled    = reflectHoriz $ Tall nmaster delta ratio
 myFull   = renamed [Replace "F"] $ noBorders Full
 myTiled  = renamed [Replace "T"] $ addGaps $ addSpacing $ tiled
 myMirror = renamed [Replace "MT"] $ addGaps $ addSpacing $ Mirror $ tiled
@@ -251,7 +256,7 @@ myConfig = def
     , focusFollowsMouse = False
     , terminal       = "alacritty"
     , keys           = myKeys
-    , manageHook = namedScratchpadManageHook scratchpads
+    , manageHook = insertPosition Below Newer <+> namedScratchpadManageHook scratchpads
     , layoutHook     = myLayout
     , borderWidth    = border
     , normalBorderColor = "#020202"
@@ -261,6 +266,7 @@ myConfig = def
     [ ("M-C-f", spawn "firefox" )
     , ("M-C-t", namedScratchpadAction scratchpads "planners" )
     , ("M-C-s", namedScratchpadAction scratchpads "spotify" )
+    , ("M-C-c", namedScratchpadAction scratchpads "calc" )
     , ("M-C-x", namedScratchpadAction scratchpads "terminal" )
     , ("M-C-m", namedScratchpadAction scratchpads "mail" )
     , ("S-M-C-l", spawn "xset s activate && sleep 30 && xset dpms force off" )

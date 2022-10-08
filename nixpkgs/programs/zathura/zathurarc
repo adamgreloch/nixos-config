@@ -16,9 +16,13 @@ set completion-group-fg "#94b979"
 set completion-highlight-bg "#dedede"
 set completion-highlight-fg "#121212"
 
-set recolor-lightcolor "#121212"
-set recolor-darkcolor "#dedede"
 set default-bg "#121212"
+#set recolor-lightcolor "#121212"
+#set recolor-darkcolor "#dedede"
+
+# sepia
+set recolor-lightcolor "#fdf6e3"
+set recolor-darkcolor "#1c1c1c"
 
 set inputbar-bg "#121212"
 set inputbar-fg "#dedede"

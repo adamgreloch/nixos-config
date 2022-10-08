@@ -37,9 +37,11 @@
 
       # math-related
       texlive.combined.scheme-full
+      kalker
 
       # c/cpp
       gcc
+      gdb
 
       # for fzf and my zsh binds
       fd
@@ -128,7 +130,7 @@
 
       zsh = {
         enable = true;
-        defaultKeymap = "viins";
+        defaultKeymap = "emacs";
         shellAliases = {
           ls = "ls -a --color=auto";
           mv = "mv -v";
