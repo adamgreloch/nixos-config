@@ -33,6 +33,7 @@
       android-studio
       qemu_kvm
       jetbrains.idea-ultimate
+      jetbrains.clion
       jdk11
 
       # math-related
@@ -42,6 +43,9 @@
       # c/cpp
       gcc
       gdb
+      gnumake
+      valgrind
+      subversion
 
       # for fzf and my zsh binds
       fd
@@ -179,7 +183,7 @@
           "100:class_g = 'Zathura' && focused"
           "90:class_g = 'Zathura' && !focused"
         ];
-        shadow = true;
+        shadow = false;
         shadowOpacity = "0.75"; # TODO Dont shadow menus
         extraOptions = "use-damage = false";
       };

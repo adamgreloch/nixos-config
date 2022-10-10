@@ -90,8 +90,15 @@
     shell = pkgs.zsh;
   };
 
-  # Turn on automatic nix optimization
-  nix.settings.auto-optimise-store = true;
+  # Turn on automatic nix optimization and garbage collection
+  nix = {
+    settings.auto-optimise-store = true;
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 30d";
+    };
+  };
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;

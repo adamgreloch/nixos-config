@@ -73,7 +73,8 @@ focusColor  = blue
 unfocusColor = base02
 
 border      = 3
-gap         = 6
+gap         = 0
+--gap         = 6
 bGap        = 90        -- bigGap, mainly for zen layout
 vbGap       = 240       -- vertical bigGap, mainly for zen layout
 
@@ -196,8 +197,8 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     , ((modMask .|. shiftMask, xK_k     ), windows W.swapUp    ) -- %! Swap the focused window with the previous window
 
     -- resizing the master/slave ratio
-    , ((modMask,               xK_h     ), sendMessage Shrink) -- %! Shrink the master area
-    , ((modMask,               xK_l     ), sendMessage Expand) -- %! Expand the master area
+    , ((modMask,               xK_l     ), sendMessage Shrink) -- %! Shrink the master area
+    , ((modMask,               xK_h     ), sendMessage Expand) -- %! Expand the master area
 
     -- floating layer support
     , ((modMask,               xK_t     ), withFocused $ windows . W.sink) -- %! Push window back into tiling
