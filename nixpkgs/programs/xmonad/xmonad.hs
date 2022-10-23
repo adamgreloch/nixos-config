@@ -28,6 +28,7 @@ import XMonad.Layout.ThreeColumns
 import XMonad.Layout.Magnifier
 import XMonad.Layout.Renamed
 import XMonad.Layout.Reflect (reflectHoriz)
+import XMonad.Layout.IfMax
 
 import Graphics.X11.ExtraTypes.XF86
 import XMonad.Hooks.DynamicLog
@@ -72,7 +73,7 @@ inactive    = base02
 focusColor  = blue
 unfocusColor = base02
 
-border      = 3
+border      = 2
 gap         = 0
 --gap         = 6
 bGap        = 90        -- bigGap, mainly for zen layout
@@ -83,7 +84,7 @@ calendarUrl = "https://calendar.google.com"
 plannersCommand = "firefox --class \"planners\" -new-instance -P \"planners\" "
         ++ todoistUrl ++ " " ++ calendarUrl
 
-comfyFloating = customFloating $ W.RationalRect (8/32) (1/16) (16/32) (14/16)
+comfyFloating = customFloating $ W.RationalRect (8/32) (0/16) (16/32) (16/16)
 
 scratchpads =
     [ NS "planners" plannersCommand (className =? "planners")
@@ -160,9 +161,9 @@ data MYFULL = MYFULL deriving (Read, Show, Eq, Typeable)
 instance Transformer MYFULL Window where
  transform MYFULL x k = k myFull (\_ -> x)
 
-myLayout = mkToggle (single ZEN)
+myLayout = (mkToggle (single ZEN)
     . mkToggle (single MYFULL)
-    $ myTiled ||| myMirror ||| threeCol
+    $ (renamed [Replace "Z/T"] $ IfMax 1 zen myTiled) ||| myMirror ||| threeCol)
 
 -- | The xmonad key bindings. Add, modify or remove key bindings here.
 --
@@ -245,12 +246,12 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     [ ((modMask .|. shiftMask,   xK_g   ), gotoMenu)
     , ((modMask .|. shiftMask,   xK_b   ), bringMenu)
     ]
-    ++
-    [ ((modMask .|. shiftMask, xK_l     ), withFocused (keysResizeWindow (10, 0) (0, 0)))
-    , ((modMask .|. shiftMask, xK_h     ), withFocused (keysResizeWindow (-10, 0) (0, 0)))
-    , ((modMask .|. shiftMask, xK_k     ), withFocused (keysResizeWindow (0, 10) (0, 0)))
-    , ((modMask .|. shiftMask, xK_j     ), withFocused (keysResizeWindow (0, -10) (0, 0)))
-    ]
+--    ++
+--    [ ((modMask .|. shiftMask, xK_l     ), withFocused (keysResizeWindow (10, 0) (0, 0)))
+--    , ((modMask .|. shiftMask, xK_h     ), withFocused (keysResizeWindow (-10, 0) (0, 0)))
+--    , ((modMask .|. shiftMask, xK_k     ), withFocused (keysResizeWindow (0, 10) (0, 0)))
+--    , ((modMask .|. shiftMask, xK_j     ), withFocused (keysResizeWindow (0, -10) (0, 0)))
+--    ]
 
 myConfig = def
     { modMask        = mod4Mask  -- Rebind Mod to the Super key
