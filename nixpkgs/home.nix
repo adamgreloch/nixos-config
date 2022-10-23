@@ -17,6 +17,7 @@
   nixpkgs.config.allowUnfree = true;
 
   home.packages = with pkgs; [
+      anki
       atool
 
       calibre
@@ -178,7 +179,7 @@
         fade = true;
         fadeDelta = 4;
         opacityRule = [
-          "100:class_g = 'Alacritty' && focused"
+          "95:class_g = 'Alacritty' && focused"
           "85:class_g = 'Alacritty' && !focused"
           "100:class_g = 'Zathura' && focused"
           "90:class_g = 'Zathura' && !focused"

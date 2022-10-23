@@ -44,6 +44,7 @@ import XMonad.Util.WorkspaceCompare
 
 import XMonad.Actions.WindowBringer
 import XMonad.Actions.FloatKeys
+import XMonad.Actions.OnScreen
 
 -- WIP colors and some ideas from Ethan Schoonover
 -- https://github.com/altercation/dotfiles-tilingwm
@@ -214,10 +215,13 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     ]
     ++
     -- mod-[1..9] %! Switch to workspace N
+    -- ctrl-mod-[1..9] %! Force switch to workspace N on current physical/Xinerama screen
     -- mod-shift-[1..9] %! Move client to workspace N
-    [((m .|. modMask, k), windows $ f i)
-        | (i, k) <- zip (XMonad.workspaces conf) [xK_1 .. xK_9]
-        , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]] -- changed from GreedyView
+    [ ((m .|. modMask, k), windows (f i))
+      | (i, k) <- zip (workspaces conf) ([xK_1 .. xK_9] ++ [xK_0])
+      , (f, m) <- [ (W.view, 0)
+                  , (W.shift, shiftMask)
+                  , (W.greedyView, controlMask) ]]
     ++
     -- mod-{w,e,r} %! Switch to physical/Xinerama screens 1, 2, or 3
     -- mod-shift-{w,e,r} %! Move client to screen 1, 2, or 3
@@ -253,12 +257,17 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 --    , ((modMask .|. shiftMask, xK_j     ), withFocused (keysResizeWindow (0, -10) (0, 0)))
 --    ]
 
+myManageHook = composeAll . concat $
+    [
+        [ className =? "zoom" <&&> title =? "zoom" --> doFloat ]
+    ]
+
 myConfig = def
     { modMask        = mod4Mask  -- Rebind Mod to the Super key
     , focusFollowsMouse = False
     , terminal       = "alacritty"
     , keys           = myKeys
-    , manageHook = insertPosition Below Newer <+> namedScratchpadManageHook scratchpads
+    , manageHook = myManageHook <+> namedScratchpadManageHook scratchpads
     , layoutHook     = myLayout
     , borderWidth    = border
     , normalBorderColor = "#020202"
