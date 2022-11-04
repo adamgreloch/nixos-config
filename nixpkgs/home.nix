@@ -67,8 +67,6 @@
     in vim)
 
     xournalpp
-
-    zoom-us
     evince
   ];
 
@@ -132,7 +130,6 @@
     fzf = {
       enable = true;
     };
-
 
     zathura = {
       enable = true;
@@ -219,6 +216,18 @@
       enable = true;
       timeout = 3;
       threshold = 3;
+    };
+  };
+
+  systemd.user.services.hsetroot = {
+    Service = {
+      Type = "oneshot";
+      ExecStart = ''
+        ${pkgs.hsetroot}/bin/hsetroot -solid "#1d2129"
+      '';
+    };
+    Install = {
+      WantedBy = [ "picom.service" ];
     };
   };
 

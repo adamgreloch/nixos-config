@@ -39,7 +39,6 @@ Config {
         [ Run Wireless "wlp3s0"  [ "--template" , "<ssid>: <quality>%"
                              , "--Low"      , "50"         -- units: %
                              , "--High"     , "80"         -- units: %
-                             , "--low"      , "#dc322f"
                              ] 10
         , Run Alsa "default" "Master" [ "-t", "V: <volume>%<status>"
                                       , "--", "-O", "", "-o", " (muted)"
@@ -75,9 +74,9 @@ Config {
                              -- discharging status
                              , "-o"	, "-"
                              -- AC "on" status
-                             , "-O"	, "<fc=#268bd2>+</fc>"
+                             , "-O"	, "+"
                              -- charged status
-                             , "-i"	, "<fc=#859900>++</fc>"
+                             , "-i"	, "<fc=#ffffff>++</fc>"
                              ] 50
 
         -- time and date indicator

@@ -2,6 +2,7 @@
 
 {
     home.packages = with pkgs; [
+      zoom-us
     ];
 
     programs = {

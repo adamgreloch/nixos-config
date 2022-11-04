@@ -67,11 +67,12 @@ violet  = "#6c71c4"
 blue    = "#268bd2"
 cyan    = "#2aa198"
 green   = "#859900"
+offwhite = "#839496"
 
-active      = blue
+active      = offwhite
 activeWarn  = red
 inactive    = base02
-focusColor  = blue
+focusColor  = offwhite
 unfocusColor = base02
 
 border      = 2
@@ -104,17 +105,17 @@ myXmobarPP :: PP
 myXmobarPP = def
     { ppSep             = " | "
     , ppTitleSanitize   = xmobarStrip
-    , ppCurrent         = white . wrap " " "" . xmobarBorder "Top" "#b58900" 2
+    , ppCurrent         = white . wrap " " "" . xmobarBorder "Bottom" offwhite 2
     , ppHidden          = white . wrap " " ""
     , ppHiddenNoWindows = lowWhite . wrap " " ""
     , ppUrgent          = red . wrap (yellow "!") (yellow "!")
     , ppOrder           = \[ws, l, _, wins] -> [ws, l, wins]
-    , ppLayout          = blue . wrap "" ""
+    , ppLayout          = white . wrap "" ""
     , ppExtras          = [logTitles formatFocused formatUnfocused]
     , ppSort = fmap (filterOutWs [scratchpadWorkspaceTag].) (ppSort def)
     }
   where
-    formatFocused   = wrap (white    "[") (white    "]") . yellow   . ppWindow
+    formatFocused   = wrap (white    "[") (white    "]") . white    . ppWindow
     formatUnfocused = wrap (lowWhite "[") (lowWhite "]") . lowWhite . ppWindow
 
     -- | Windows should have *some* title, which should not not exceed a
@@ -125,7 +126,7 @@ myXmobarPP = def
     blue, lowWhite, magenta, red, white, yellow :: String -> String
     magenta  = xmobarColor "#d33682" ""
     blue     = xmobarColor "#268bd2" ""
-    white    = xmobarColor "#839496" ""
+    white    = xmobarColor "#ffffff" ""
     yellow   = xmobarColor "#b58900" ""
     red      = xmobarColor "#dc322f" ""
     lowWhite = xmobarColor "#586e75" ""
@@ -272,7 +273,7 @@ myConfig = def
     , layoutHook     = myLayout
     , borderWidth    = border
     , normalBorderColor = "#020202"
-    , focusedBorderColor = "#7aa7da"
+    , focusedBorderColor = focusColor
     }
     `additionalKeysP`
     [ ("M-C-f", spawn "firefox" )

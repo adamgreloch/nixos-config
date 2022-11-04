@@ -137,6 +137,7 @@
   # Set up xsecurelock
   environment.sessionVariables = rec {
     XSECURELOCK_NO_COMPOSITE = "1";
+    XSECURELOCK_SHOW_DATETIME = "1";
   };
 
   # Before changing this value read the documentation for this option
