@@ -164,7 +164,7 @@ instance Transformer MYFULL Window where
 
 myLayout = (mkToggle (single ZEN)
     . mkToggle (single MYFULL)
-    $ (renamed [Replace "Z/T"] $ IfMax 1 zen myTiled) ||| myMirror ||| threeCol)
+    $ myTiled ||| (renamed [Replace "Z/T"] $ IfMax 1 zen myTiled) ||| myMirror ||| threeCol)
 
 -- | The xmonad key bindings. Add, modify or remove key bindings here.
 --
@@ -259,7 +259,8 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
 myManageHook = composeAll . concat $
     [
-        [ className =? "zoom" <&&> title =? "zoom" --> doFloat ]
+        [ className =? ".zoom " --> doFloat ]
+        , [ className =? ".zoom" --> doFloat ]
     ]
 
 myConfig = def

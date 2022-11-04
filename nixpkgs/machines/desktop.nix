@@ -11,7 +11,7 @@
               family = "Iosevka Extended";
               style = "Regular";
             };
-            size = 14;
+            size = 13;
           };
       };
     };
