@@ -212,7 +212,6 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
     -- quit, or restart
     , ((modMask .|. shiftMask, xK_c     ), io (exitWith ExitSuccess)) -- %! Quit xmonad
-    , ((modMask              , xK_c     ), spawn "if type xmonad; then xmonad --recompile && xmonad --restart; else xmessage xmonad not in \\$PATH: \"$PATH\"; fi") -- %! Restart xmonad
     ]
     ++
     -- mod-[1..9] %! Switch to workspace N

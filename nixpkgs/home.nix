@@ -1,8 +1,5 @@
 { config, pkgs, ... }:
 
-# TODO
-# * symlink xmobar config and make them machine-specific!
-
 {
   imports = [
     ./programs/xmonad/default.nix
@@ -197,68 +194,64 @@
     };
 
     random-background = {
-      enable = true;
+      enable = false;
       imageDirectory = "%h/current";
     };
 
     screen-locker = {
-        enable = true;
-        lockCmd = "${pkgs.xsecurelock}/bin/xsecurelock";
-        inactiveInterval = 15;
-        xss-lock.extraOptions = [
-          "-l" 
-          "-n ${pkgs.xsecurelock}/libexec/xsecurelock/dimmer" 
+      enable = true;
+      lockCmd = "${pkgs.xsecurelock}/bin/xsecurelock";
+      inactiveInterval = 15;
+      xss-lock.extraOptions = [
+        "-l" 
+        "-n ${pkgs.xsecurelock}/libexec/xsecurelock/dimmer" 
           #"--ignore-sleep"
         ];
       };
 
-    unclutter = {
-      enable = true;
-      timeout = 3;
-      threshold = 3;
+      unclutter = {
+        enable = true;
+        timeout = 3;
+        threshold = 3;
+      };
     };
-  };
 
-  systemd.user.services.hsetroot = {
-    Service = {
-      Type = "oneshot";
-      ExecStart = ''
-        ${pkgs.hsetroot}/bin/hsetroot -solid "#1d2129"
-      '';
+    systemd.user.services.hsetroot = {
+      Service = {
+        Type = "oneshot";
+        ExecStart = ''
+          ${pkgs.hsetroot}/bin/hsetroot -solid "#1d2129"
+        '';
+      };
+      Install = {
+        WantedBy = [ "picom.service" ];
+      };
     };
-    Install = {
-      WantedBy = [ "picom.service" ];
-    };
-  };
 
-  home.pointerCursor = {
-    name = "Vanilla-DMZ-AA";
-    package = "${pkgs.vanilla-dmz}";
-    size = 16;
-    x11 = {
-      enable = true;
-      defaultCursor = "left_ptr";
+    home.pointerCursor = {
+      name = "Vanilla-DMZ-AA";
+      package = "${pkgs.vanilla-dmz}";
+      size = 16;
+      x11 = {
+        enable = true;
+        defaultCursor = "left_ptr";
+      };
     };
-  };
 
-  dconf.settings = {
-    "org/gnome/desktop/interface" = {
-      color-scheme = "prefer-dark";
+    dconf.settings = {
+      "org/gnome/desktop/interface" = {
+        color-scheme = "prefer-dark";
+      };
     };
-  };
 
-  home.sessionVariables.GTK_THEME = "adwaita-dark";
+    home.sessionVariables.GTK_THEME = "adwaita-dark";
 
-  home.file = {
-    ideavimrc = {
-      source = ./programs/ideavimrc/.ideavimrc;
-      target = ".ideavimrc";
+    home.file = {
+      ideavimrc = {
+        source = ./programs/ideavimrc/.ideavimrc;
+        target = ".ideavimrc";
+      };
     };
-    xmobar = {
-      source = ./programs/xmobar;
-      target = ".config/xmobar";
-    };
-  };
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
