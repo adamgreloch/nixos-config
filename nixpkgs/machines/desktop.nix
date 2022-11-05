@@ -9,10 +9,10 @@
     alacritty.settings = {
       font = {
         normal = {
-          family = "Iosevka Extended";
+          family = "Ubuntu Mono";
           style = "Regular";
         };
-        size = 13;
+        size = 14;
       };
     };
   };

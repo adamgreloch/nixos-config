@@ -184,7 +184,7 @@
       ];
       shadow = false;
       shadowOpacity = "0.75"; # TODO Dont shadow menus
-      extraOptions = "use-damage = false";
+      extraOptions = "use-damage = false;";
     };
 
     redshift = {

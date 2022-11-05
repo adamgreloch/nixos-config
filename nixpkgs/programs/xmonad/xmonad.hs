@@ -76,8 +76,8 @@ focusColor  = offwhite
 unfocusColor = base02
 
 border      = 2
-gap         = 0
---gap         = 6
+--gap         = 0
+gap         = 6
 bGap        = 90        -- bigGap, mainly for zen layout
 vbGap       = 240       -- vertical bigGap, mainly for zen layout
 

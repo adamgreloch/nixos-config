@@ -60,6 +60,7 @@
   fonts.fonts = with pkgs; [
     iosevka
     gohufont
+    ubuntu_font_family
   ];
 
   # Configure keymap in X11
