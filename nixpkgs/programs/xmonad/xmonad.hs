@@ -41,6 +41,7 @@ import XMonad.Hooks.InsertPosition
 import XMonad.ManageHook
 import XMonad.Util.NamedScratchpad
 import XMonad.Util.WorkspaceCompare
+import XMonad.Hooks.DynamicProperty
 
 import XMonad.Actions.WindowBringer
 import XMonad.Actions.FloatKeys
@@ -90,13 +91,13 @@ comfyFloating = customFloating $ W.RationalRect (8/32) (0/16) (16/32) (16/16)
 
 scratchpads =
     [ NS "planners" plannersCommand (className =? "planners")
-        comfyFloating
+        nonFloating
     , NS "spotify" "spotify" (className =? "Spotify")
-        comfyFloating
+        nonFloating
     , NS "terminal" "alacritty --class scratchterm" (resource =? "scratchterm")
         comfyFloating
     , NS "mail" "thunderbird" (className =? "thunderbird")
-        comfyFloating
+        nonFloating
     , NS "calc" "alacritty --class calc --command \"kalker\"" (resource =? "calc")
         comfyFloating
         ]
@@ -257,10 +258,32 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 --    , ((modMask .|. shiftMask, xK_j     ), withFocused (keysResizeWindow (0, -10) (0, 0)))
 --    ]
 
-myManageHook = composeAll . concat $
-    [
-        [ className =? ".zoom " --> doFloat ]
-        , [ className =? ".zoom" --> doFloat ]
+manageZoomHook =
+  composeAll $
+    [ (className =? zoomClassName) <&&> shouldFloat <$> title --> doFloat,
+      (className =? zoomClassName) <&&> shouldSink <$> title --> doSink
+    ]
+  where
+    zoomClassName = "zoom"
+    tileTitles =
+      [ "Zoom - Free Account", -- main window
+        "Zoom - Licensed Account", -- main window
+        "Zoom", -- meeting window on creation
+        "Zoom Meeting" -- meeting window shortly after creation
+      ]
+    shouldFloat title = title `notElem` tileTitles
+    shouldSink title = title `elem` tileTitles
+    doSink = (ask >>= doF . W.sink) <+> doF W.swapDown
+
+myManageHook = 
+  manageZoomHook
+  <+> namedScratchpadManageHook scratchpads
+  <+> manageHook def
+
+myHandleEventHook =
+  mconcat
+    [ dynamicTitle manageZoomHook,
+      handleEventHook def
     ]
 
 myConfig = def
@@ -268,7 +291,8 @@ myConfig = def
     , focusFollowsMouse = False
     , terminal       = "alacritty"
     , keys           = myKeys
-    , manageHook = myManageHook <+> namedScratchpadManageHook scratchpads
+    , manageHook = myManageHook 
+    , handleEventHook = myHandleEventHook
     , layoutHook     = myLayout
     , borderWidth    = border
     , normalBorderColor = "#020202"
