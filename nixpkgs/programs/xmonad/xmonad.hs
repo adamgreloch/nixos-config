@@ -4,7 +4,7 @@
  - TODO:
  - [X] Fix xmobar not appearing after initial exec. Though it will always
  - appear after xmonad reload. -- Fixed by moving to NixOS...
- - [ ] One config for two screen sizes (desktop/laptop)
+ - [X] One config for two screen sizes (desktop/laptop)
  -}
 
 import XMonad
@@ -50,7 +50,7 @@ import XMonad.Actions.OnScreen
 -- WIP colors and some ideas from Ethan Schoonover
 -- https://github.com/altercation/dotfiles-tilingwm
 --
--- Actually now the colors might differ from solarized. Need to check
+-- The colors are based on, but might differ from solarized
 
 base03  = "#002b36"
 base02  = "#073642"
@@ -76,7 +76,7 @@ inactive    = base02
 focusColor  = offwhite
 unfocusColor = base02
 
-border      = 2
+border      = 1
 --gap         = 0
 gap         = 6
 bGap        = 90        -- bigGap, mainly for zen layout
@@ -264,7 +264,7 @@ manageZoomHook =
       (className =? zoomClassName) <&&> shouldSink <$> title --> doSink
     ]
   where
-    zoomClassName = "zoom"
+    zoomClassName = ".zoom "
     tileTitles =
       [ "Zoom - Free Account", -- main window
         "Zoom - Licensed Account", -- main window
@@ -280,19 +280,12 @@ myManageHook =
   <+> namedScratchpadManageHook scratchpads
   <+> manageHook def
 
-myHandleEventHook =
-  mconcat
-    [ dynamicTitle manageZoomHook,
-      handleEventHook def
-    ]
-
 myConfig = def
     { modMask        = mod4Mask  -- Rebind Mod to the Super key
     , focusFollowsMouse = False
     , terminal       = "alacritty"
     , keys           = myKeys
     , manageHook = myManageHook 
-    , handleEventHook = myHandleEventHook
     , layoutHook     = myLayout
     , borderWidth    = border
     , normalBorderColor = "#020202"
@@ -305,8 +298,8 @@ myConfig = def
     , ("M-C-c", namedScratchpadAction scratchpads "calc" )
     , ("M-C-x", namedScratchpadAction scratchpads "terminal" )
     , ("M-C-m", namedScratchpadAction scratchpads "mail" )
-    , ("S-M-C-l", spawn "xset s activate && sleep 30 && xset dpms force off" )
-    , ("M-C-p", spawn "zathura \"$(fd -I -e \"pdf\" | dmenu -i -l 30)\"" )
+    , ("S-M-C-l", spawn "xset s activate && sleep 5 && xset dpms force off && sleep 15 && systemctl suspend" )
+    , ("M-C-p", spawn "zathura \"$(fd -I -e \"pdf\" -e \"djvu\" | dmenu -i -l 30)\"" )
     , ("M-C-S-s", spawn "maim -s -u $HOME/Screenshots/$(date +%Y-%m-%d-%H-%M-%S).png")
     ]
 

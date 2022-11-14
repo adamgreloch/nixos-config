@@ -2,7 +2,6 @@
 
 {
   imports = [
-    ./programs/xmonad/default.nix
     ./machine.nix # import machine-specific config
   ];
 
@@ -64,6 +63,8 @@
     in vim)
 
     xournalpp
+    xfce.thunar
+
     evince
   ];
 
@@ -173,7 +174,7 @@
 
   services = {
     picom = {
-      enable = true;
+      enable = false;
       backend = "glx";
       vSync = true;
       fade = true;
