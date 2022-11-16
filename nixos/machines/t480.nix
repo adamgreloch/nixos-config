@@ -1,6 +1,11 @@
 { config, lib, pkgs, ... }:
 
 {
+  imports = [
+    #../wm/xmonad.nix
+    ../wm/gnome.nix
+  ];
+
   networking.hostName = "nixos-t480";
 
   boot.initrd.availableKernelModules = [ "aesni_intel" "cryptd" "xhci_pci" "nvme" "usb_storage"
@@ -39,6 +44,8 @@
       # Suspend on short press
       HandlePowerKey=suspend
     '';
+
+    power-profiles-daemon.enable = false;
   };
 
   # Enable TPM 2.0
@@ -50,4 +57,4 @@
 
   swapDevices = [{device = "/var/swapfile"; size = 32768; }];
 }
-			
+

@@ -1,6 +1,11 @@
 { config, pkgs, ... }:
 
 {
+  imports = [
+    ../modules/gnome.nix
+    #../programs/xmonad/default.nix
+  ];
+
   home.packages = with pkgs; [
     mathematica
   ];
@@ -12,7 +17,7 @@
           family = "Ubuntu Mono";
           style = "Regular";
         };
-        size = 11;
+        size = 14;
       };
     };
   };

@@ -4,8 +4,6 @@
   imports =
     [
       ./hardware-configuration.nix
-      #./wm/xmonad.nix
-      ./wm/gnome.nix
       ./machine.nix # import machine-specific config
   ];
 

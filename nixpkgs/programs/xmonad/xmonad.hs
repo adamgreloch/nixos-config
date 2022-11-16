@@ -77,8 +77,8 @@ focusColor  = offwhite
 unfocusColor = base02
 
 border      = 1
---gap         = 0
-gap         = 6
+gap         = 0
+--gap         = 6
 bGap        = 90        -- bigGap, mainly for zen layout
 vbGap       = 240       -- vertical bigGap, mainly for zen layout
 
@@ -230,10 +230,10 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
         | (key, sc) <- zip [xK_w, xK_e, xK_r] [0..]
         , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
     ++
-    [ ((0,              xF86XK_MonBrightnessDown), spawn "xbacklight -2"  )
-    , ((0,              xF86XK_MonBrightnessUp  ), spawn "xbacklight +2"  )
-    , ((shiftMask,      xF86XK_MonBrightnessDown), spawn "xbacklight -10"  )
-    , ((shiftMask,      xF86XK_MonBrightnessUp  ), spawn "xbacklight +10")
+    [ ((0,              xF86XK_MonBrightnessDown), spawn "xbacklight -10"  )
+    , ((0,              xF86XK_MonBrightnessUp  ), spawn "xbacklight +10"  )
+    , ((shiftMask,      xF86XK_MonBrightnessDown), spawn "xbacklight -2"  )
+    , ((shiftMask,      xF86XK_MonBrightnessUp  ), spawn "xbacklight +2")
     ]
     ++
     [ ((0,              xF86XK_AudioPlay     ), spawn "playerctl play-pause"  )

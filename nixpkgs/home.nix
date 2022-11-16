@@ -114,145 +114,148 @@
           lg = "log --color --graph --pretty=format:'%Cred%h%Creset
           -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
           --abbrev-commit";
-        };
-        rebase.autoStash = true;
-        status = {
+          };
+          rebase.autoStash = true;
+          status = {
           branch = true;
           short = true;
+          };
+          pull.rebase = true;
+          merge.tool = "vimdiff";
         };
-        pull.rebase = true;
-        merge.tool = "vimdiff";
-      };
-    };
-
-    fzf = {
-      enable = true;
-    };
-
-    zathura = {
-      enable = true;
-      extraConfig = builtins.readFile (./programs/zathura/zathurarc);
-    };
-
-    zsh = {
-      enable = true;
-      defaultKeymap = "emacs";
-      shellAliases = {
-        ls = "ls -a --color=auto";
-        mv = "mv -v";
-        rm = "rm -I";
-
-        g = "git status";
-        ga = "git add";
-        gc = "git commit";
-        gl = "git lg";
-
-        v = "vim";
-        vxm = "vim ~/.config/nixpkgs/programs/xmonad/xmonad.hs";
-        vxmb = "vim ~/.config/xmobar/xmobarrc";
-        shdn = "shutdown now";
-        x = "xdg-open";
-        z = "zathura";
-        zp = "z *.pdf";
-        plan = "feh -Z ~/Pudlo/studia/plan.gif";
-
-        sconf = "sudo nixos-rebuild switch";
-        shome = "home-manager switch";
-        vhome = "vim ~/.config/nixpkgs/home.nix";
-        vconf = "vim /etc/nixos/configuration.nix";
-        cdpkg = "cd ~/.config/nixpkgs/";
-
-        tl = "vim ~/Pudlo/thelist.md";
-      };
-      history = {
-        size = 5000;
-        path = "${config.xdg.dataHome}/zsh/history";
-      };
-      initExtra = builtins.readFile (./programs/zsh/additional);
-    };
-  };
-
-  services = {
-    picom = {
-      enable = false;
-      backend = "glx";
-      vSync = true;
-      fade = true;
-      fadeDelta = 4;
-      opacityRule = [
-        "95:class_g = 'Alacritty' && focused"
-        "85:class_g = 'Alacritty' && !focused"
-      ];
-      shadow = false;
-      shadowOpacity = "0.75"; # TODO Dont shadow menus
-      extraOptions = "use-damage = false;";
-    };
-
-    redshift = {
-      enable = true;
-      latitude = 52.14;
-      longitude = 21.1;
-    };
-
-    random-background = {
-      enable = false;
-      imageDirectory = "%h/current";
-    };
-
-    screen-locker = {
-      enable = true;
-      lockCmd = "${pkgs.xsecurelock}/bin/xsecurelock";
-      inactiveInterval = 15;
-      xss-lock.extraOptions = [
-        "-l" 
-        "-n ${pkgs.xsecurelock}/libexec/xsecurelock/dimmer" 
-          #"--ignore-sleep"
-        ];
       };
 
-      unclutter = {
+      fzf = {
         enable = true;
-        timeout = 3;
-        threshold = 3;
+      };
+
+      zathura = {
+        enable = true;
+        extraConfig = builtins.readFile (./programs/zathura/zathurarc);
+      };
+
+      zsh = {
+        enable = true;
+        defaultKeymap = "emacs";
+        shellAliases = {
+          ls = "ls -a --color=auto";
+          mv = "mv -v";
+          rm = "rm -I";
+
+          g = "git status";
+          ga = "git add";
+          gc = "git commit";
+          gl = "git lg";
+
+          v = "vim";
+          vxm = "vim ~/.config/nixpkgs/programs/xmonad/xmonad.hs";
+          vxmb = "vim ~/.config/xmobar/xmobarrc";
+          shdn = "shutdown now";
+          x = "xdg-open";
+          z = "zathura";
+          zp = "z *.pdf";
+          plan = "feh -Z ~/Pudlo/studia/plan.gif";
+
+          sconf = "sudo nixos-rebuild switch";
+          shome = "home-manager switch";
+          vhome = "vim ~/.config/nixpkgs/home.nix";
+          vconf = "vim /etc/nixos/configuration.nix";
+          cdpkg = "cd ~/.config/nixpkgs/";
+
+          tl = "vim ~/Pudlo/thelist.md";
+        };
+        history = {
+          size = 5000;
+          path = "${config.xdg.dataHome}/zsh/history";
+        };
+        initExtra = builtins.readFile (./programs/zsh/additional);
       };
     };
 
-    systemd.user.services.hsetroot = {
+    services = {
+      picom = {
+        enable = false;
+        backend = "glx";
+        vSync = true;
+        fade = true;
+        fadeDelta = 4;
+        opacityRule = [
+          "95:class_g = 'Alacritty' && focused"
+          "85:class_g = 'Alacritty' && !focused"
+        ];
+        shadow = false;
+        shadowOpacity = "0.75"; # TODO Dont shadow menus
+        extraOptions = "use-damage = false;";
+      };
+
+      redshift = {
+        enable = true;
+        latitude = 52.14;
+        longitude = 21.1;
+      };
+
+      sxhkd = {
+        enable = true;
+        keybindings = {
+          "super + shift + ctrl + p"
+          = "zathura \"$(fd -I -e \"pdf\" -e \"djvu\" | dmenu -i -l 30)\"";
+          "super + shift + Return" = "alacritty";
+          "super + p" = "dmenu_run";
+        };
+      };
+    };
+
+    systemd.user.services = {
+      sxhkd = {
+        Service = {
+          ExecStart = ''
+            ${pkgs.sxhkd}/bin/sxhkd
+          '';
+        #  ExecReload = ''
+        #    ${pkgs.stdenv}/bin/kill -SIGUSR1 $MAINPID
+        #  '';
+      };
+      Install = {
+        WantedBy = [ "display-manager.service" ];
+      };
+    };
+    hsetroot = {
       Service = {
         Type = "oneshot";
         ExecStart = ''
-          ${pkgs.hsetroot}/bin/hsetroot -solid "#1d2129"
+            ${pkgs.hsetroot}/bin/hsetroot -solid "#1d2129"
         '';
       };
       Install = {
         WantedBy = [ "picom.service" ];
       };
     };
+  };
 
-    home.pointerCursor = {
-      name = "Vanilla-DMZ-AA";
-      package = "${pkgs.vanilla-dmz}";
-      size = 16;
-      x11 = {
-        enable = true;
-        defaultCursor = "left_ptr";
-      };
+  home.pointerCursor = {
+    name = "Vanilla-DMZ-AA";
+    package = "${pkgs.vanilla-dmz}";
+    size = 16;
+    x11 = {
+      enable = true;
+      defaultCursor = "left_ptr";
     };
+  };
 
-    dconf.settings = {
-      "org/gnome/desktop/interface" = {
-        color-scheme = "prefer-dark";
-      };
+  dconf.settings = {
+    "org/gnome/desktop/interface" = {
+      color-scheme = "prefer-dark";
     };
+  };
 
-    home.sessionVariables.GTK_THEME = "adwaita-dark";
+  home.sessionVariables.GTK_THEME = "adwaita-dark";
 
-    home.file = {
-      ideavimrc = {
-        source = ./programs/ideavimrc/.ideavimrc;
-        target = ".ideavimrc";
-      };
+  home.file = {
+    ideavimrc = {
+      source = ./programs/ideavimrc/.ideavimrc;
+      target = ".ideavimrc";
     };
+  };
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;

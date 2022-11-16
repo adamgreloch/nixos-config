@@ -1,11 +1,12 @@
 { config, pkgs, lib, ... }:
 
 {
-  home.packages = with pkgs; [
-    gnomeExtensions.dash-to-dock
-    gnomeExtensions.sound-output-device-chooser
+  home.packages = (with pkgs; [
     cinnamon.nemo
-  ];
+  ]) ++ (with pkgs.gnomeExtensions; [
+    dash-to-dock
+    sound-output-device-chooser
+  ]);
 
   gtk = {
     enable = true;
@@ -17,7 +18,7 @@
 
     theme = {
       name = "Adwaita-dark";
-      package = pkgs.palenight-theme;
+      package = pkgs.gnome-themes-extra;
     };
   };
 
@@ -28,7 +29,7 @@
         "dash-to-dock@micxgx.gmail.com"
         "sound-output-device-chooser@kgshank.net"
       ];
-      favourite-apps = [
+      favorite-apps = [
         "firefox.desktop"
         "nemo.desktop"
         "Alacritty.desktop"
@@ -44,7 +45,8 @@
     };
     "org/gnome/shell/extensions/dash-to-dock" = {
       extend-height = true;
-      dock-fixed = true;
+      dock-fixed = false;
+      intellihide = true;
       dock-position = "LEFT";
       custom-theme-shrink = true;
       background-color = "rgb(0,0,0)";
@@ -57,8 +59,11 @@
       running-indicator-style = "DOTS";
     };
     "org/gnome/desktop/peripherals/keyboard" = {
-      delay = lib.hm.gvariant.mkUint32 200;
+      delay = lib.hm.gvariant.mkUint32 150;
       repeat-interval = lib.hm.gvariant.mkUint32 30;
+    };
+    "org/gnome/desktop/peripherals/touchpad" = {
+      tap-to-click = true;
     };
     "org/gnome/settings-daemon/plugins/media-keys" = {
       email = ["<Control><Super>m"];
@@ -66,15 +71,12 @@
     "org/gnome/desktop/wm/keybindings" = {
       close = ["<Shift><Super>q"];
     };
-    "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
-      name = "term";
-      command = "alacritty";
-      binding = "<Shift><Super>Return";
+    "org/gnome/desktop/wm/preferences" = {
+      button-layout = "appmenu:minimize,maximize,close";
     };
-    "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1" = {
-      name = "screenshot to clipboard";
-      command = "maim -s -u | xclip -selection clipboard -t image/png";
-      binding = "<Shift><Control><Super>s";
+    "org/gnome/desktop/interface" = {
+      enable-hot-corners = false;
+      show-battery-percentage = true;
     };
   };
 }

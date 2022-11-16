@@ -12,5 +12,30 @@
       ];
       config = ./xmonad.hs;
     };
+
   };
-}
+
+  service = {
+    unclutter = {
+      enable = true;
+      timeout = 3;
+      threshold = 3;
+    };
+
+    random-background = {
+      enable = false;
+      imageDirectory = "%h/current";
+    };
+
+    screen-locker = {
+      enable = true;
+      lockCmd = "${pkgs.xsecurelock}/bin/xsecurelock";
+      inactiveInterval = 15;
+      xss-lock.extraOptions = [
+        "-l" 
+        "-n ${pkgs.xsecurelock}/libexec/xsecurelock/dimmer" 
+          #"--ignore-sleep"
+        ];
+      };
+    };
+  }
