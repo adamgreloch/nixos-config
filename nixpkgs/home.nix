@@ -22,8 +22,6 @@
     pfetch
     spotify
     thunderbird
-    xmobar
-    feh
     maim
     xclip
 
@@ -51,6 +49,9 @@
     fd
     tree
 
+    python39
+    pandoc
+
     s-tui
     stress
 
@@ -64,8 +65,6 @@
 
     xournalpp
     xfce.thunar
-
-    evince
   ];
 
   programs = {
@@ -146,6 +145,7 @@
           ga = "git add";
           gc = "git commit";
           gl = "git lg";
+          gd = "git diff";
 
           v = "vim";
           vxm = "vim ~/.config/nixpkgs/programs/xmonad/xmonad.hs";
@@ -248,7 +248,9 @@
     };
   };
 
-  home.sessionVariables.GTK_THEME = "adwaita-dark";
+  home.sessionVariables = {
+    GTK_THEME = "adwaita-dark";
+  };
 
   home.file = {
     ideavimrc = {

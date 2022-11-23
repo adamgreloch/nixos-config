@@ -1,4 +1,10 @@
 {
+
+  home.packages = with pkgs; [
+    feh
+    xmobar
+  ];
+
   xsession = {
     enable = true;
 

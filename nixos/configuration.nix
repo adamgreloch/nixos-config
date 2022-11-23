@@ -57,7 +57,6 @@
   };
 
   fonts.fonts = with pkgs; [
-    iosevka
     gohufont
     ubuntu_font_family
   ];
@@ -107,7 +106,6 @@
   environment.systemPackages = with pkgs; [
     vim
     networkmanagerapplet
-    xsecurelock
   ];
 
   services = {
@@ -119,10 +117,6 @@
         };
       };
 
-  
-  ## Security
-  # TODO: whole-disk encryption
-
   # Open ports in the firewall for Syncthing
   networking.firewall.allowedTCPPorts = [ 22000 ];
   networking.firewall.allowedUDPPorts = [ 22000 21027 ];
@@ -130,14 +124,6 @@
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = true;
-  };
-
-  programs.xss-lock.enable = true;
-
-  # Set up xsecurelock
-  environment.sessionVariables = rec {
-    XSECURELOCK_NO_COMPOSITE = "1";
-    XSECURELOCK_SHOW_DATETIME = "1";
   };
 
   # Before changing this value read the documentation for this option

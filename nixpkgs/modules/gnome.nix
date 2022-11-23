@@ -44,13 +44,14 @@
       ];
     };
     "org/gnome/shell/extensions/dash-to-dock" = {
-      extend-height = true;
+      #extend-height = true;
       dock-fixed = false;
       intellihide = true;
-      dock-position = "LEFT";
+      #dock-position = "LEFT";
+      dock-position = "BOTTOM";
       custom-theme-shrink = true;
       background-color = "rgb(0,0,0)";
-      dash-max-icon-size = 38;
+      dash-max-icon-size = 48;
       transparency-mode = "DYNAMIC";
       customize-alphas = true;
       min-alpha = 0.5;
@@ -64,12 +65,6 @@
     };
     "org/gnome/desktop/peripherals/touchpad" = {
       tap-to-click = true;
-    };
-    "org/gnome/settings-daemon/plugins/media-keys" = {
-      email = ["<Control><Super>m"];
-    };
-    "org/gnome/desktop/wm/keybindings" = {
-      close = ["<Shift><Super>q"];
     };
     "org/gnome/desktop/wm/preferences" = {
       button-layout = "appmenu:minimize,maximize,close";
