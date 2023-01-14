@@ -5,6 +5,7 @@
     [
       ./hardware-configuration.nix
       ./machine.nix # import machine-specific config
+      ./db.nix
   ];
 
   # Bootloader.

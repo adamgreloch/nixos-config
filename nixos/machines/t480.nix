@@ -4,6 +4,7 @@
   imports = [
     #../wm/xmonad.nix
     ../wm/gnome.nix
+    #../wm/xfce.nix
   ];
 
   networking.hostName = "nixos-t480";

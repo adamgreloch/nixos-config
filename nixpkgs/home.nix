@@ -32,10 +32,15 @@
 
     jetbrains.clion
     jetbrains.datagrip
+    jetbrains.pycharm-professional
 
     # math-related
     texlive.combined.scheme-full
     kalker
+
+    # rails
+    jetbrains.ruby-mine
+    ruby_3_0
 
     # c/cpp
     gcc
@@ -48,6 +53,8 @@
     # for fzf and my zsh binds
     fd
     tree
+
+    fortune
 
     python39
     pandoc
@@ -63,8 +70,12 @@
       };
     in vim)
 
+    man-pages
+    libreoffice
+
     xournalpp
     xfce.thunar
+    vlc
   ];
 
   programs = {
@@ -82,6 +93,11 @@
           };
         };
       };
+    };
+
+    direnv = {
+      enable = true;
+      nix-direnv.enable = true;
     };
 
     tmux = {
@@ -179,13 +195,13 @@
         vSync = true;
         fade = true;
         fadeDelta = 4;
-        opacityRule = [
+        opacityRules = [
           "95:class_g = 'Alacritty' && focused"
           "85:class_g = 'Alacritty' && !focused"
         ];
         shadow = false;
         shadowOpacity = "0.75"; # TODO Dont shadow menus
-        extraOptions = "use-damage = false;";
+        settings = "use-damage = false;";
       };
 
       redshift = {
@@ -199,8 +215,11 @@
         keybindings = {
           "super + shift + ctrl + p"
           = "zathura \"$(fd -I -e \"pdf\" -e \"djvu\" | dmenu -i -l 30)\"";
+          "super + shift + ctrl + f"
+          = "alacritty -e vim \"$(fd | dmenu -i -l 30)\"";
           "super + shift + Return" = "alacritty";
           "super + p" = "dmenu_run";
+          "super + ctrl + t" = "thunderbird";
         };
       };
     };
@@ -211,9 +230,9 @@
           ExecStart = ''
             ${pkgs.sxhkd}/bin/sxhkd
           '';
-        #  ExecReload = ''
-        #    ${pkgs.stdenv}/bin/kill -SIGUSR1 $MAINPID
-        #  '';
+         # ExecReload = ''
+         #   /bin/pkill sxhkd
+         # '';
       };
       Install = {
         WantedBy = [ "display-manager.service" ];

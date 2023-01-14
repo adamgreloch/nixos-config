@@ -33,6 +33,21 @@ function cd_up {
 zle -N cd_up
 bindkey '^u' cd_up
 
+# man wrapper for colorizing pages
+# https://github.com/ael-code/zsh-colored-man-pages
+function man() {
+	env \
+		LESS_TERMCAP_md=$(tput bold; tput setaf 4) \
+		LESS_TERMCAP_me=$(tput sgr0) \
+		LESS_TERMCAP_mb=$(tput blink) \
+		LESS_TERMCAP_us=$(tput setaf 2) \
+		LESS_TERMCAP_ue=$(tput sgr0) \
+		LESS_TERMCAP_so=$(tput smso) \
+		LESS_TERMCAP_se=$(tput rmso) \
+		PAGER="${commands[less]:-$PAGER}" \
+		man "$@"
+}
+
 # Edit line in vim with ctrl-e: (clashes with emacs keymap)
 # autoload edit-command-line; zle -N edit-command-line
 # bindkey '^e' edit-command-line
@@ -40,3 +55,5 @@ bindkey '^u' cd_up
 # Enable colors and change prompt:
 autoload -U colors && colors
 PS1="%{$fg[green]%}%B%c%b $%{$reset_color%} "
+
+# vim:ft=bash

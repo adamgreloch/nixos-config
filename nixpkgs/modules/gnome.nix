@@ -3,6 +3,7 @@
 {
   home.packages = (with pkgs; [
     cinnamon.nemo
+    gnome.pomodoro
   ]) ++ (with pkgs.gnomeExtensions; [
     dash-to-dock
     sound-output-device-chooser
@@ -47,8 +48,8 @@
       #extend-height = true;
       dock-fixed = false;
       intellihide = true;
-      #dock-position = "LEFT";
-      dock-position = "BOTTOM";
+      dock-position = "LEFT";
+      #dock-position = "BOTTOM";
       custom-theme-shrink = true;
       background-color = "rgb(0,0,0)";
       dash-max-icon-size = 48;
@@ -60,7 +61,7 @@
       running-indicator-style = "DOTS";
     };
     "org/gnome/desktop/peripherals/keyboard" = {
-      delay = lib.hm.gvariant.mkUint32 150;
+      delay = lib.hm.gvariant.mkUint32 200;
       repeat-interval = lib.hm.gvariant.mkUint32 30;
     };
     "org/gnome/desktop/peripherals/touchpad" = {
